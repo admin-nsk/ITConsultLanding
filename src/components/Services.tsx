@@ -1,3 +1,4 @@
+import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { 
@@ -126,7 +127,10 @@ export function Services() {
                   <div className="text-sm text-muted-foreground">Автоматизированные операции</div>
                 </div>
               </div>
-              <Button size="lg" className="group">
+              <Button size="lg" className="group" onClick={() => {
+                const targetElement = document.getElementById('contact');
+                if (targetElement) targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}>
                   Начать оценку автоматизации
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>

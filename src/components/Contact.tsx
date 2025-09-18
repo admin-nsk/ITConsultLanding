@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
@@ -14,7 +15,74 @@ import {
   CheckCircle 
 } from "lucide-react";
 
-export function Contact() {
+export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [company, setCompany] = useState("");
+  const [message, setMessage] = useState("");
+  const [interests, setInterests] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const allServices = [
+    "IT-консалтинг",
+    "Автоматизация бизнеса",
+    "Облачные решения",
+    "Анализ данных",
+    "Кибербезопасность",
+    "Цифровой рост",
+  ];
+
+  function toggleInterest(service: string, checked: boolean) {
+    setInterests((prev) => (checked ? (prev.includes(service) ? prev : [...prev, service]) : prev.filter((s) => s !== service)));
+  }
+
+  async function handleSubmit() {
+    setError(null);
+    setSuccess(false);
+    if (!firstName.trim() && !lastName.trim()) {
+      setError("Укажите имя или фамилию");
+      return;
+    }
+    if (!email.trim()) {
+      setError("Укажите email");
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const payload = {
+        name: `${firstName.trim()} ${lastName.trim()}`.trim(),
+        email: email.trim(),
+        phone: "",
+        message: message.trim() || undefined,
+        company: company.trim() || undefined,
+        interests: interests.length ? interests : undefined,
+      };
+      const res = await fetch(`/api/v1/contacts/consult`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const detail = await res.text();
+        throw new Error(detail || "Request failed");
+      }
+      setSuccess(true);
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setCompany("");
+      setMessage("");
+      setInterests([]);
+    } catch (e: any) {
+      setError(e?.message || "Ошибка отправки");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <section id="contact" className="py-20">
       <div className="container mx-auto px-4">
@@ -43,31 +111,36 @@ export function Contact() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Имя</label>
-                    <Input placeholder="Стив" />
+                    <Input placeholder="Стив" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Фамилия</label>
-                    <Input placeholder="Джобс" />
+                    <Input placeholder="Джобс" value={lastName} onChange={(e) => setLastName(e.target.value)} />
                   </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Email</label>
-                    <Input type="email" placeholder="john@company.com" />
+                    <Input type="email" placeholder="john@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-2">Компания</label>
-                    <Input placeholder="Ваша компания" />
+                    <Input placeholder="Ваша компания" value={company} onChange={(e) => setCompany(e.target.value)} />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium mb-2">Интерес к услуге</label>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {["IT-консалтинг", "Автоматизация бизнеса", "Облачные решения", "Анализ данных", "Кибербезопасность", "Цифровой рост"].map((service) => (
+                    {allServices.map((service) => (
                       <label key={service} className="flex items-center space-x-2 text-sm">
-                        <input type="checkbox" className="rounded border-gray-300" />
+                        <input
+                          type="checkbox"
+                          className="rounded border-gray-300"
+                          checked={interests.includes(service)}
+                          onChange={(e) => toggleInterest(service, e.target.checked)}
+                        />
                         <span>{service}</span>
                       </label>
                     ))}
@@ -79,10 +152,14 @@ export function Contact() {
                   <Textarea 
                     placeholder="Расскажите нам, как мы можем Вам помочь..."
                     rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
                 </div>
 
-                <Button size="lg" className="w-full group">
+                {error && <div className="text-sm text-red-500">{error}</div>}
+                {success && <div className="text-sm text-green-600">Сообщение отправлено!</div>}
+                <Button size="lg" className="w-full group" disabled={isSubmitting} onClick={handleSubmit}>
                   Отправить сообщение
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
@@ -161,7 +238,7 @@ export function Contact() {
                     <span>Пользовательские рекомендации</span>
                   </li>
                 </ul>
-                <Button variant="secondary" className="w-full">
+                <Button variant="secondary" className="w-full" onClick={() => onOpenConsult?.()}>
                    Записаться
                 </Button>
               </CardContent>

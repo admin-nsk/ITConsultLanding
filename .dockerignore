@@ -1,0 +1,16 @@
+.git
+.github
+.vscode
+node_modules
+build
+dist
+*.log
+backend/.venv
+backend/data
+__pycache__
+*.pyc
+.env
+*.local
+
+
+

@@ -1,8 +1,9 @@
+import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-export function Hero() {
+export function Hero({ onOpenConsult }: { onOpenConsult?: () => void }) {
   return (
     <section id="home" className="relative py-20 lg:py-32 overflow-hidden">
       {/* Background with overlay */}
@@ -28,7 +29,7 @@ export function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button size="lg" className="text-lg px-8 py-6">
+            <Button size="lg" className="text-lg px-8 py-6" onClick={() => onOpenConsult?.()}>
               Получить бесплатную консультацию
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>

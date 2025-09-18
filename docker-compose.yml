@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: itconsult-landing-backend:latest
+    container_name: itconsult-backend
+    environment:
+      - API_PREFIX=/api
+      - CORS_ORIGINS=http://localhost:3000,http://localhost
+      - DATA_DIR=/data
+    volumes:
+      - backend_data:/data
+    ports:
+      - "7000:7000"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    image: itconsult-landing-frontend:latest
+    container_name: itconsult-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:8005"
+
+volumes:
+  backend_data:
+    driver: local
+
+
