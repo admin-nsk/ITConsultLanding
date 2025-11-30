@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-16">
@@ -20,16 +21,16 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">IT</span>
+                <span className="text-primary-foreground font-bold">NS</span>
               </div>
-              <span className="text-xl font-bold">TechConsult</span>
+              <span className="text-xl font-bold">NeuroSystems</span>
             </div>
             <p className="text-gray-400 text-sm">
                 Трансформация бизнеса с помощью инновационных ИТ-решений и интеллектуальной автоматизации.
                 Ваш надежный технологический партнер с 2010 года.
             </p>
             <div className="flex space-x-4">
-              <Button size="sm" variant="ghost" className="w-10 h-10 p-0 text-gray-400 hover:text-white">
+              {/* <Button size="sm" variant="ghost" className="w-10 h-10 p-0 text-gray-400 hover:text-white">
                 <Linkedin className="w-4 h-4" />
               </Button>
               <Button size="sm" variant="ghost" className="w-10 h-10 p-0 text-gray-400 hover:text-white">
@@ -37,7 +38,7 @@ export function Footer() {
               </Button>
               <Button size="sm" variant="ghost" className="w-10 h-10 p-0 text-gray-400 hover:text-white">
                 <Facebook className="w-4 h-4" />
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -92,10 +93,10 @@ export function Footer() {
         {/* Bottom section */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-sm text-gray-400">
-            © 2025 TechConsult. All rights reserved.
+            © {currentYear} NeuroSystems. Все права защищены.
           </div>
           <div className="flex flex-wrap gap-6 text-sm text-gray-400">
-            <a href="#" className="hover:text-white transition-colors">Политика конфиденциальности</a>
+            <a href="/privacy-policy" className="hover:text-white transition-colors">Политика обработки персональных данных</a>
             <a href="#" className="hover:text-white transition-colors">Условия обслуживания</a>
             <a href="#" className="hover:text-white transition-colors">Политика использования cookie</a>
           </div>
@@ -106,16 +107,16 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div className="flex items-center space-x-2 text-gray-400">
               <Phone className="w-4 h-4" />
-              <span>+1 (555) 123-4567</span>
+              <span>+7 (961) 218-3656</span>
             </div>
             <div className="flex items-center space-x-2 text-gray-400">
               <Mail className="w-4 h-4" />
-              <span>hello@techconsult.com</span>
+              <span>info@nurosystems.tech</span>
             </div>
-            <div className="flex items-center space-x-2 text-gray-400">
+            {/* <div className="flex items-center space-x-2 text-gray-400">
               <MapPin className="w-4 h-4" />
               <span>123 Business Ave, Tech District, CA</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

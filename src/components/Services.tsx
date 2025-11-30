@@ -11,6 +11,7 @@ import {
   ArrowRight 
 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import automationImage from "../static/img/auto.png";
 
 const services = [
   {
@@ -137,7 +138,7 @@ export function Services() {
             </div>
             <div className="relative">
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1647427060118-4911c9821b82?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGF1dG9tYXRpb24lMjB3b3JrZmxvd3xlbnwxfHx8fDE3NTgwODU2NDF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src={automationImage}
                 alt="Business automation workflow"
                 className="w-full h-80 object-cover rounded-xl"
               />

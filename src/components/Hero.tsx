@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import backgroundImage from "../static/img/fon.png";
 
 export function Hero({ onOpenConsult }: { onOpenConsult?: () => void }) {
   return (
@@ -9,7 +10,7 @@ export function Hero({ onOpenConsult }: { onOpenConsult?: () => void }) {
       {/* Background with overlay */}
       <div className="absolute inset-0 z-0">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1748346918817-0b1b6b2f9bab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjB0ZWNobm9sb2d5JTIwY29uc3VsdGluZ3xlbnwxfHx8fDE3NTgwNjI2Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+          src={backgroundImage}
           alt="Modern office technology"
           className="w-full h-full object-cover"
         />

@@ -3,6 +3,7 @@ import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ArrowRight, Users, Building, Globe } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import teamImage from "../static/img/comand.png";
 
 export function About() {
   return (
@@ -84,7 +85,7 @@ export function About() {
           {/* Image and testimonials */}
           <div className="space-y-8">
             <ImageWithFallback
-              src="https://images.unsplash.com/photo-1752170080773-fed7758395c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjB0ZWFtJTIwbWVldGluZ3xlbnwxfHx8fDE3NTgwMDMyNTd8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              src={teamImage}
               alt="Professional team meeting"
               className="w-full h-80 object-cover rounded-2xl"
             />
@@ -102,7 +103,7 @@ export function About() {
                   </div>
                 </div>
                 <p className="text-muted-foreground italic mb-4">
-                  "TechConsult изменила всю нашу деятельность. Внедренные ими решения по автоматизации
+                  "NeuroSystems изменила всю нашу деятельность. Внедренные ими решения по автоматизации
                     позволили нам сэкономить более 500 тысяч долларов в год и повысить эффективность на 60%. Выдающиеся результаты!"
                 </p>
                 <div className="flex space-x-1">

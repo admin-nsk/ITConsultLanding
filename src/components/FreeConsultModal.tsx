@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
 
 type FreeConsultModalProps = {
   isOpen: boolean;
@@ -17,12 +18,22 @@ export function FreeConsultModal({ isOpen, onOpenChange }: FreeConsultModalProps
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const [agreeConsent, setAgreeConsent] = useState(false);
 
   async function handleSubmit() {
     setError(null);
     setSuccess(false);
     if (!name.trim() || !phone.trim() || !email.trim()) {
       setError("Заполните все поля");
+      return;
+    }
+    if (!agreePrivacy) {
+      setError("Необходимо согласие с политикой обработки персональных данных");
+      return;
+    }
+    if (!agreeConsent) {
+      setError("Необходимо согласие на обработку персональных данных");
       return;
     }
     setIsSubmitting(true);
@@ -40,6 +51,8 @@ export function FreeConsultModal({ isOpen, onOpenChange }: FreeConsultModalProps
       setName("");
       setPhone("");
       setEmail("");
+      setAgreePrivacy(false);
+      setAgreeConsent(false);
       setTimeout(() => onOpenChange(false), 1200);
     } catch (e: any) {
       setError(e?.message || "Ошибка отправки");
@@ -67,6 +80,54 @@ export function FreeConsultModal({ isOpen, onOpenChange }: FreeConsultModalProps
             <label className="block text-sm font-medium mb-2">Email</label>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@company.com" />
           </div>
+          
+          <div className="space-y-3">
+            <div className="flex items-start space-x-2">
+              <Checkbox
+                id="modal-privacy-policy"
+                checked={agreePrivacy}
+                onCheckedChange={(checked) => setAgreePrivacy(checked === true)}
+              />
+              <label
+                htmlFor="modal-privacy-policy"
+                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              >
+                Согласен с{" "}
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline hover:text-primary/80"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  политикой обработки персональных данных
+                </a>
+              </label>
+            </div>
+            <div className="flex items-start space-x-2">
+              <Checkbox
+                id="modal-consent"
+                checked={agreeConsent}
+                onCheckedChange={(checked) => setAgreeConsent(checked === true)}
+              />
+              <label
+                htmlFor="modal-consent"
+                className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              >
+                Согласен на{" "}
+                <a
+                  href="/consent"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline hover:text-primary/80"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  обработку персональных данных
+                </a>
+              </label>
+            </div>
+          </div>
+          
           {error && <div className="text-sm text-red-500">{error}</div>}
           {success && <div className="text-sm text-green-600">Заявка отправлена!</div>}
           <Button className="w-full" disabled={isSubmitting} onClick={handleSubmit}>

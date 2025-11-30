@@ -9,6 +9,7 @@ import {
   Rocket 
 } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import dashboardImage from "../static/img/graf.jpeg";
 
 const features = [
   {
@@ -82,7 +83,7 @@ export function Features() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-blue-500/20 rounded-2xl transform rotate-3"></div>
             <ImageWithFallback
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXRhJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkfGVufDF8fHx8MTc1Nzk5MzAzNHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+              src={dashboardImage}
               alt="Analytics dashboard"
               className="relative z-10 w-full h-96 object-cover rounded-2xl shadow-2xl"
             />

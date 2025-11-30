@@ -5,6 +5,14 @@ import { useState } from "react";
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleScrollToContact = () => {
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      setIsMenuOpen(false);
+    }
+  };
+
   return (
     <header className="bg-white/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -12,9 +20,9 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-primary-foreground font-bold">IT</span>
+              <span className="text-primary-foreground font-bold">NS</span>
             </div>
-            <span className="font-bold text-xl">TechConsult</span>
+            <span className="font-bold text-xl">NeuroSystems</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -27,8 +35,8 @@ export function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline">Получить консультацию</Button>
-            <Button>Связаться с нами</Button>
+            <Button variant="outline" onClick={handleScrollToContact}>Получить консультацию</Button>
+            <Button onClick={handleScrollToContact}>Связаться с нами</Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -49,7 +57,7 @@ export function Header() {
               <a href="#about" className="hover:text-primary transition-colors">О компании</a>
               <a href="#contact" className="hover:text-primary transition-colors">Контакты</a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="outline" className="w-full">Получить консультацию</Button>
+                <Button variant="outline" className="w-full" onClick={handleScrollToContact}>Получить консультацию</Button>
                 <Button className="w-full">Связаться с нами</Button>
               </div>
             </nav>

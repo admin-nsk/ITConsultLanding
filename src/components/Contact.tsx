@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Badge } from "./ui/badge";
+import { Checkbox } from "./ui/checkbox";
 import { 
   Mail, 
   Phone, 
@@ -25,6 +26,8 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [agreePrivacy, setAgreePrivacy] = useState(false);
+  const [agreeConsent, setAgreeConsent] = useState(false);
 
   const allServices = [
     "IT-консалтинг",
@@ -50,6 +53,14 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
       setError("Укажите email");
       return;
     }
+    if (!agreePrivacy) {
+      setError("Необходимо согласие с политикой обработки персональных данных");
+      return;
+    }
+    if (!agreeConsent) {
+      setError("Необходимо согласие на обработку персональных данных");
+      return;
+    }
     setIsSubmitting(true);
     try {
       const payload = {
@@ -67,6 +78,24 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
       });
       if (!res.ok) {
         const detail = await res.text();
+        // Проверяем, является ли это ошибкой валидации
+        try {
+          const errorData = JSON.parse(detail);
+          if (errorData.detail && Array.isArray(errorData.detail)) {
+            // Ищем ошибку валидации email
+            const emailError = errorData.detail.find(
+              (err: any) => err.loc && err.loc.includes("email")
+            );
+            if (emailError) {
+              throw new Error("Некорректный email");
+            }
+          }
+        } catch (e: any) {
+          // Если это уже наша ошибка с текстом, пробрасываем её
+          if (e.message === "Некорректный email") {
+            throw e;
+          }
+        }
         throw new Error(detail || "Request failed");
       }
       setSuccess(true);
@@ -76,6 +105,8 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
       setCompany("");
       setMessage("");
       setInterests([]);
+      setAgreePrivacy(false);
+      setAgreeConsent(false);
     } catch (e: any) {
       setError(e?.message || "Ошибка отправки");
     } finally {
@@ -157,6 +188,53 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
                   />
                 </div>
 
+                <div className="space-y-3">
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="privacy-policy"
+                      checked={agreePrivacy}
+                      onCheckedChange={(checked) => setAgreePrivacy(checked === true)}
+                    />
+                    <label
+                      htmlFor="privacy-policy"
+                      className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Согласен с{" "}
+                      <a
+                        href="/privacy-policy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline hover:text-primary/80"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        политикой обработки персональных данных
+                      </a>
+                    </label>
+                  </div>
+                  <div className="flex items-start space-x-2">
+                    <Checkbox
+                      id="consent"
+                      checked={agreeConsent}
+                      onCheckedChange={(checked) => setAgreeConsent(checked === true)}
+                    />
+                    <label
+                      htmlFor="consent"
+                      className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                      Согласен на{" "}
+                      <a
+                        href="/consent"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline hover:text-primary/80"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        обработку персональных данных
+                      </a>
+                    </label>
+                  </div>
+                </div>
+
                 {error && <div className="text-sm text-red-500">{error}</div>}
                 {success && <div className="text-sm text-green-600">Сообщение отправлено!</div>}
                 <Button size="lg" className="w-full group" disabled={isSubmitting} onClick={handleSubmit}>
@@ -186,7 +264,7 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
                   <Mail className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-sm text-muted-foreground">hello@techconsult.com</div>
+                    <div className="text-sm text-muted-foreground">info@nurosystems.tech</div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
@@ -199,16 +277,16 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-start space-x-3">
+                {/* <div className="flex items-start space-x-3">
                   <Clock className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <div className="font-medium">Рабочие часы</div>
                     <div className="text-sm text-muted-foreground">
-                      Mon-Fri: 9:00 AM - 6:00 PM<br />
-                      Sat: 10:00 AM - 4:00 PM
+                      Пн-Пт: 9:00 - 18:00 <br />
+                      Сб: 10:00 - 16:00
                     </div>
                   </div>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
 
