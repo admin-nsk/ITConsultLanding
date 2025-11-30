@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
@@ -15,6 +15,11 @@ import {
   Calendar,
   CheckCircle 
 } from "lucide-react";
+import { 
+  decodeContactData, 
+  contactPhoneParts, 
+  contactEmailParts 
+} from "../utils/contactProtection";
 
 export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
   const [firstName, setFirstName] = useState("");
@@ -28,6 +33,8 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
   const [success, setSuccess] = useState(false);
   const [agreePrivacy, setAgreePrivacy] = useState(false);
   const [agreeConsent, setAgreeConsent] = useState(false);
+  const [contactPhone, setContactPhone] = useState("");
+  const [contactEmail, setContactEmail] = useState("");
 
   const allServices = [
     "IT-консалтинг",
@@ -37,6 +44,12 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
     "Кибербезопасность",
     "Цифровой рост",
   ];
+
+  useEffect(() => {
+    // Декодируем контактные данные только на клиенте после монтирования
+    setContactPhone(decodeContactData(contactPhoneParts));
+    setContactEmail(decodeContactData(contactEmailParts));
+  }, []);
 
   function toggleInterest(service: string, checked: boolean) {
     setInterests((prev) => (checked ? (prev.includes(service) ? prev : [...prev, service]) : prev.filter((s) => s !== service)));
@@ -131,7 +144,7 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <Card>
+            <Card id="contact-form">
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <MessageSquare className="w-5 h-5" />
@@ -257,14 +270,14 @@ export function Contact({ onOpenConsult }: { onOpenConsult?: () => void }) {
                   <Phone className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <div className="font-medium">Телефон</div>
-                    <div className="text-sm text-muted-foreground">+7 (962) 218-3656</div>
+                    <div className="text-sm text-muted-foreground">{contactPhone || "Загрузка..."}</div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
                   <Mail className="w-5 h-5 text-primary mt-1" />
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-sm text-muted-foreground">info@nurosystems.tech</div>
+                    <div className="text-sm text-muted-foreground">{contactEmail || "Загрузка..."}</div>
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">

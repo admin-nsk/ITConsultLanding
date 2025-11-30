@@ -4,7 +4,7 @@ import os
 from functools import lru_cache
 from typing import List
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, field_validator, model_validator
 
 
 class Settings(BaseModel):
@@ -21,6 +21,13 @@ class Settings(BaseModel):
     contact_file: str = os.getenv("CONTACT_FILE", "contacts.jsonl")
     sqlite_file: str = os.getenv("SQLITE_FILE", "site.db")
 
+    smtp_host: str = os.getenv("SMTP_HOST", "smtp.mail.ru")
+    smtp_port: int = int(os.getenv("SMTP_PORT", "587"))
+    smtp_user: str = os.getenv("SMTP_USER", "")
+    smtp_password: str = os.getenv("SMTP_PASSWORD", "")
+    smtp_from_email: str = os.getenv("SMTP_FROM_EMAIL", "")
+    mail_list: List[str] = []
+
     @field_validator("cors_origins", mode="before")
     @classmethod
     def parse_cors_origins(cls, v: List[str] | str | None) -> List[str]:
@@ -29,6 +36,15 @@ class Settings(BaseModel):
         if isinstance(v, list):
             return v
         return [item.strip() for item in v.split(",") if item.strip()]
+
+    @model_validator(mode="after")
+    def parse_mail_list(self) -> "Settings":
+        mail_list_raw = os.getenv("MAIL_LIST", "")
+        if mail_list_raw:
+            self.mail_list = [
+                item.strip() for item in mail_list_raw.split(",") if item.strip()
+            ]
+        return self
 
     def ensure_data_dir_exists(self) -> None:
         if not os.path.isdir(self.data_dir):

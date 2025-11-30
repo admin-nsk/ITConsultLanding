@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Separator } from "./ui/separator";
@@ -10,9 +11,23 @@ import {
   Facebook,
   ArrowRight 
 } from "lucide-react";
+import { 
+  decodeContactData, 
+  footerPhoneParts, 
+  footerEmailParts 
+} from "../utils/contactProtection";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const [footerPhone, setFooterPhone] = useState("");
+  const [footerEmail, setFooterEmail] = useState("");
+
+  useEffect(() => {
+    // Декодируем контактные данные только на клиенте после монтирования
+    setFooterPhone(decodeContactData(footerPhoneParts));
+    setFooterEmail(decodeContactData(footerEmailParts));
+  }, []);
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-16">
@@ -77,7 +92,7 @@ export function Footer() {
             <div className="space-y-2">
               <Input 
                 type="email" 
-                placeholder="Enter your email"
+                placeholder="email"
                 className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
               />
               <Button className="w-full group">
@@ -107,11 +122,11 @@ export function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div className="flex items-center space-x-2 text-gray-400">
               <Phone className="w-4 h-4" />
-              <span>+7 (961) 218-3656</span>
+              <span>{footerPhone || "Загрузка..."}</span>
             </div>
             <div className="flex items-center space-x-2 text-gray-400">
               <Mail className="w-4 h-4" />
-              <span>info@nurosystems.tech</span>
+              <span>{footerEmail || "Загрузка..."}</span>
             </div>
             {/* <div className="flex items-center space-x-2 text-gray-400">
               <MapPin className="w-4 h-4" />

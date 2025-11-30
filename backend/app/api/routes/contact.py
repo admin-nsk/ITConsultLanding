@@ -7,6 +7,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 from ...core.config import get_settings
 from ...core.db import insert_site_request
+from ...core.email import send_contact_notification
 
 
 router = APIRouter(prefix="", tags=["contact"])
@@ -90,6 +91,18 @@ async def submit_consult(payload: ConsultPayload) -> dict:
         )
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=f"Failed to save request: {exc}") from exc
+
+    try:
+        await send_contact_notification(
+            name=payload.name.strip(),
+            email=payload.email,
+            company=payload.company.strip() if payload.company else None,
+            message=payload.message.strip() if payload.message else None,
+            interests=payload.interests,
+        )
+    except Exception:  # noqa: BLE001
+        pass
+
     return {"ok": True}
 
 

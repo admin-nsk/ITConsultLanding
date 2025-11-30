@@ -10,3 +10,4 @@ node_modules
 .cursor/rules
 .cursor/rules/back.mdc
 .cursor/rules/front.mdc
+build/

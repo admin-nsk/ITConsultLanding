@@ -53,6 +53,13 @@ const services = [
 ];
 
 export function Services() {
+  const handleScrollToContact = () => {
+    const contactForm = document.getElementById("contact-form");
+    if (contactForm) {
+      contactForm.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <section id="services" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -89,7 +96,7 @@ export function Services() {
                       </li>
                     ))}
                   </ul>
-                  <Button variant="outline" className="w-full group">
+                  <Button variant="outline" onClick={handleScrollToContact} className="w-full group">
                     Узнать больше
                     <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Button>
