@@ -6,7 +6,7 @@ services:
     container_name: itconsult-backend
     environment:
       - API_PREFIX=/api
-      - CORS_ORIGINS=http://localhost:3000,http://localhost
+      - CORS_ORIGINS=http://localhost:5000,http://localhost
       - DATA_DIR=/data
     volumes:
       - backend_data:/data
@@ -22,7 +22,7 @@ services:
     depends_on:
       - backend
     ports:
-      - "3000:8005"
+      - "5000:8005"
 
 volumes:
   backend_data:

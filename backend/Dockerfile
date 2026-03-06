@@ -16,8 +16,8 @@ COPY app /app/app
 # Создадим каталог для данных на случай bind-монтажа/volume
 RUN mkdir -p /app/data
 
-EXPOSE 8000
+EXPOSE 8050
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8050"]
 
 

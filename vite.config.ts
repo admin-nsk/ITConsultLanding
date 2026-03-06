@@ -54,11 +54,11 @@
       outDir: 'build',
     },
     server: {
-      port: 3000,
+      port: 5000,
       open: true,
       proxy: {
         '/api': {
-          target: 'http://localhost:8000',
+          target: 'http://localhost:8050',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '/api'),
         },

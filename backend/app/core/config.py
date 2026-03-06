@@ -14,7 +14,7 @@ class Settings(BaseModel):
 
     api_prefix: str = os.getenv("API_PREFIX", "/api")
 
-    cors_origins_raw: str = os.getenv("CORS_ORIGINS", "http://localhost:3000")
+    cors_origins_raw: str = os.getenv("CORS_ORIGINS", "http://localhost:5000")
     cors_origins: List[str] = []
 
     data_dir: str = os.getenv("DATA_DIR", "backend/data")
