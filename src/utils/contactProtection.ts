@@ -35,7 +35,7 @@ export function decodeContactData(parts: string[]): string {
 
 // Контактный телефон из Contact.tsx: +7 (962) 218-3656
 // Разделен на части: "+7 (9", "62) 2", "18-3656"
-export const contactPhoneParts = ["KzcgKDk=", "NjIpIDI=", "MTgtMzY1Ng=="];
+export const contactPhoneParts = ["KzcgKDk=", "NjEpIDI=", "MTgtMzY1Ng=="];
 
 // Email из Contact.tsx: info@nurosystems.tech
 // Разделен на части: "info@", "nuros", "ystems.tech"
